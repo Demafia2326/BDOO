@@ -9,6 +9,6 @@ package Controlador;
  *
  * @author Daniel Pérez Ramírez
  */
-public class Controlador {
+public class ColaboradorControler {
     
 }

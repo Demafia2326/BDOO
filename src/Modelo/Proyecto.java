@@ -23,6 +23,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 
 @Entity
@@ -46,17 +47,25 @@ public class Proyecto implements Serializable {
     private String descrip;
     @Column(name = "Localizacion")
     private String localizacion;
+    
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
     
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "Colaborador", fetch = FetchType.LAZY)
-    private List<Proyecto> proyectoList;
+    private List<Proyecto> colabList;
     
     
     
     public Proyecto() {
     }
+
+    public Proyecto(int codigo, String descrip) {
+        this.codigo = codigo;
+        this.descrip = descrip;
+    }
+
+    
 
     public int getCodigo() {
         return codigo;
@@ -105,7 +114,7 @@ public class Proyecto implements Serializable {
     public void setEmpleadosList(List<Empleados> empleadosList) {
         this.empleadosList = empleadosList;
     }
-    */
+    
     /*
     @Override
     public int hashCode() {
