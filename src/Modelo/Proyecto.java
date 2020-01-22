@@ -15,6 +15,9 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -27,11 +30,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Proyecto.findAll", query = "SELECT d FROM Proyecto d")
-    , @NamedQuery(name = "Proyecto.findByNumdept", query = "SELECT d FROM Proyecto d WHERE d.numdept = :numdept")
-    , @NamedQuery(name = "Proyecto.findByNombre", query = "SELECT d FROM Proyecto d WHERE d.nombre = :nombre")
+    , @NamedQuery(name = "Proyecto.findByNumdept", query = "SELECT d FROM Proyecto d WHERE d.codigo = :codigo")
+    , @NamedQuery(name = "Proyecto.findByNombre", query = "SELECT d FROM Proyecto d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "Proyecto.findByLocalizacion", query = "SELECT d FROM Proyecto d WHERE d.localizacion = :localizacion")})
 public class Proyecto implements Serializable {
-/*
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,30 +46,32 @@ public class Proyecto implements Serializable {
     private String descrip;
     @Column(name = "Localizacion")
     private String localizacion;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "proyecto", fetch = FetchType.LAZY)
-    private List<Presupuesto> presupuestoList;
-    @OneToMany(mappedBy = "numdept", fetch = FetchType.LAZY)
-    private List<Empleados> empleadosList;
-
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
+    
+    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "Colaborador", fetch = FetchType.LAZY)
+    private List<Proyecto> proyectoList;
+    
+    
+    
     public Proyecto() {
     }
 
-    
-
-    public Short getNumdept() {
-        return numdept;
+    public int getCodigo() {
+        return codigo;
     }
 
-    public void setNumdept(Short numdept) {
-        this.numdept = numdept;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
-    public String getNombre() {
-        return nombre;
+    public String getDescrip() {
+        return descrip;
     }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
+    public void setDescrip(String descrip) {
+        this.descrip = descrip;
     }
 
     public String getLocalizacion() {
@@ -77,6 +82,12 @@ public class Proyecto implements Serializable {
         this.localizacion = localizacion;
     }
 
+    
+    
+    
+
+    
+    /*
     @XmlTransient
     public List<Presupuesto> getPresupuestoList() {
         return presupuestoList;
@@ -94,7 +105,8 @@ public class Proyecto implements Serializable {
     public void setEmpleadosList(List<Empleados> empleadosList) {
         this.empleadosList = empleadosList;
     }
-
+    */
+    /*
     @Override
     public int hashCode() {
         int hash = 0;
@@ -114,10 +126,11 @@ public class Proyecto implements Serializable {
         }
         return true;
     }
+    */
 
     @Override
     public String toString() {
-        return "modelo.Departamentos[ numdept=" + numdept + " ]";
+        return "modelo.Departamentos[ numdept=" + codigo + " ]";
     }
- */   
+   
 }
