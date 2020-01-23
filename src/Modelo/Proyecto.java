@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -64,6 +65,14 @@ public class Proyecto implements Serializable {
         this.codigo = codigo;
         this.descrip = descrip;
     }
+
+    public Proyecto(int codigo, String descrip, String localizacion) {
+        this.codigo = codigo;
+        this.descrip = descrip;
+        this.localizacion = localizacion;
+    }
+    
+    
 
     
 

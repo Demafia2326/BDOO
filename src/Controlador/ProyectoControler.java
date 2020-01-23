@@ -28,7 +28,7 @@ public class ProyectoControler {
        
 	    
        
-            Query q1 = getEm().createQuery("select * from Departamentos ", Proyecto.class);
+            Query q1 = getEm().createQuery("select * from Proyecto ", Proyecto.class);
            // d = new Departamentos();
        
         return list;
@@ -59,14 +59,12 @@ public class ProyectoControler {
                 Colaborador p=null;
 		
 		getEm().getTransaction().begin();
-		Proyecto D = new Proyecto(d.getCodigo(), d.getDescrip());
-              //  e = new Empleados(e.getNumemp(),e.getNombre(),e.getFechacontrato());
-               // p = new Presupuesto(p.getPresupuestoPK());
-                //d.setPresupuestoList((List<Presupuesto>) p);
-              //  d.setEmpleadosList((List<Empleados>) e);
+		Proyecto D = new Proyecto(d.getCodigo(), d.getDescrip(),d.getLocalizacion());
+              
 		D.setLocalizacion(d.getLocalizacion());
                 getEm().persist(D);
 		getEm().getTransaction().commit();
+                getEm().close();
 		
 		
               
@@ -80,7 +78,12 @@ public class ProyectoControler {
                 D.setDescrip(d.getDescrip());
                 D.setLocalizacion(d.getLocalizacion());
                 getEm().getTransaction().commit();
-         
+                getEm().close();
+    }
+     
+     
+    public static void listar(){
+        
     }
      
      public static void eliminar(Proyecto d){
@@ -89,8 +92,7 @@ public class ProyectoControler {
          getEm().getTransaction().begin();
          getEm().remove(D);
          getEm().getTransaction().commit();
-        
-
+         getEm().close();
     }
 
     /**
