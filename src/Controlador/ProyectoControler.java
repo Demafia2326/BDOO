@@ -37,7 +37,7 @@ public class ProyectoControler {
   
     
     
-    public static Proyecto get(short id){
+    public static Proyecto get(int id){
        
         Proyecto d = null;
             		
