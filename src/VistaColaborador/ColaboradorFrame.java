@@ -3,29 +3,37 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vistaProyecto;
+package vistaColaborador;
 
+import Controlador.ColaboradorControler;
 import Controlador.ProyectoControler;
+import Modelo.Colaborador;
 import Modelo.Proyecto;
 import Vista.View;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author alfon
  */
-public class ProyectoFrame extends javax.swing.JFrame {
+public class ColaboradorFrame extends javax.swing.JFrame {
 
-    private ProyectoTableModel model;
+    private ColaboradorTableModel model;
+    private DefaultListModel selec = new DefaultListModel();
+    private List<Proyecto> lista= new ArrayList<>();
+    private List<Proyecto> listafinal= new ArrayList<>();
 
-    public ProyectoFrame() throws Exception {
+    public ColaboradorFrame() throws Exception {
         initComponents();
-        this.model = new ProyectoTableModel(new ProyectoControler());
+        this.model = new ColaboradorTableModel(new ColaboradorControler());
         getData();
         this.tabla.setModel(model);
         //Introducimos la estructura de la tabla         
         this.Details.setEdit(false);
-        this.Details.setproyecto(null);
+        this.Details.setColaborador(null);
         activateButtonsCRUD(false);
         activateButtonsSave(false);
         this.tabla.getSelectionModel().addListSelectionListener(e -> {
@@ -37,7 +45,8 @@ public class ProyectoFrame extends javax.swing.JFrame {
         Registros.setText("Actualizando tabla...");
         model.updateModel();
         model.fireTableDataChanged();
-        Registros.setText(model.getRowCount() + " Proyecto disponibles");
+        Registros.setText(model.getRowCount() + " Colaborador disponibles");
+        getProyectos();
     }
 
     private void activateButtonsCRUD(boolean active) {
@@ -51,9 +60,18 @@ public class ProyectoFrame extends javax.swing.JFrame {
     }
 
     //Método para obtener el objeto de la fila seleccionada
-    private Proyecto getSelectedproyecto() throws Exception {
+    private Colaborador getSelectedColaborador() throws Exception {
         int id = (int) tabla.getValueAt(tabla.getSelectedRow(), 0);
-        return new ProyectoControler().get(id);
+        return new ColaboradorControler().getColaboradorById(id);
+    }
+    
+    public void getProyectos(){
+        lista=ProyectoControler.getAll();
+        if(lista!=null){
+            for(Proyecto p: lista){
+                items.addItem(p.getCodigo()+"");
+            }
+        }
     }
 
     /**
@@ -74,12 +92,17 @@ public class ProyectoFrame extends javax.swing.JFrame {
         BSave = new javax.swing.JButton();
         BCancel = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        menu = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         Registros = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        Details = new vistaProyecto.ProyectoDetailsPanel();
+        Details = new vistaColaborador.ColaboradorDetailsPanel();
+        items = new javax.swing.JComboBox<>();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        listitems = new javax.swing.JList<>();
+        jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Registro de Sedes");
@@ -165,16 +188,17 @@ public class ProyectoFrame extends javax.swing.JFrame {
         jToolBar1.add(BCancel);
         jToolBar1.add(jSeparator3);
 
-        menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deshacer.png"))); // NOI18N
-        menu.setFocusable(false);
-        menu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        menu.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        menu.addActionListener(new java.awt.event.ActionListener() {
+        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deshacer.png"))); // NOI18N
+        jButton1.setText("Menu");
+        jButton1.setFocusable(false);
+        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                menuActionPerformed(evt);
+                jButton1ActionPerformed(evt);
             }
         });
-        jToolBar1.add(menu);
+        jToolBar1.add(jButton1);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -196,8 +220,68 @@ public class ProyectoFrame extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        jPanel1.setLayout(new java.awt.BorderLayout());
-        jPanel1.add(Details, java.awt.BorderLayout.CENTER);
+        Details.setPreferredSize(new java.awt.Dimension(385, 193));
+
+        items.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        items.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "1" }));
+
+        listitems.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        listitems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane2.setViewportView(listitems);
+
+        jButton2.setText("add");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jButton3.setText("delete");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(Details, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 3, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(items, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(60, 60, 60)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(68, 68, 68))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(Details, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 164, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(jButton2))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(39, 39, 39)
+                                .addComponent(items, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+        );
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_END);
 
@@ -206,7 +290,7 @@ public class ProyectoFrame extends javax.swing.JFrame {
 
     private void BAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAddActionPerformed
         tabla.clearSelection();
-        Details.setproyecto(null);
+        Details.setColaborador(null);
         Details.loadData();
         Details.setEdit(true);
         activateButtonsSave(true);
@@ -214,8 +298,8 @@ public class ProyectoFrame extends javax.swing.JFrame {
 
     private void BEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BEditActionPerformed
         try {
-            Proyecto proyecto = getSelectedproyecto();
-            Details.setproyecto(proyecto);
+            Colaborador Colaborador = getSelectedColaborador();
+            Details.setColaborador(Colaborador);
             Details.setEnabled(true);
             Details.setEdit(true);
             Details.loadData();
@@ -227,10 +311,10 @@ public class ProyectoFrame extends javax.swing.JFrame {
 
     private void BDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BDeleteActionPerformed
         try {
-            Proyecto proyecto = getSelectedproyecto();
+            Colaborador Colaborador = getSelectedColaborador();
             
             if (JOptionPane.showConfirmDialog(rootPane, "¿Seguro que quieres borrar " + "esta sede?", "Borrar Sede", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                ProyectoControler.eliminar(proyecto);
+                ColaboradorControler.delete(Colaborador);
                 getData();
             } else {
                 JOptionPane.showMessageDialog(rootPane, "No puedes borrar una sede " + "hasta borrar todos sus complejos", "Error borrar Sede", JOptionPane.OK_OPTION);
@@ -245,18 +329,21 @@ public class ProyectoFrame extends javax.swing.JFrame {
     private void BSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BSaveActionPerformed
         try {
             if (Details.checkData()) {
-                Proyecto proyecto = Details.getproyecto();
-                if ((Integer)proyecto.getCodigo()== null) {
-                    ProyectoControler.almacenarNuevo(proyecto);
+                Colaborador Colaborador = Details.getColaborador();
+                if ((Integer)Colaborador.getCodigo()== null) {
+                    ColaboradorControler.saveColaborador(Colaborador);
+                    ColaboradorControler.addProyecto(Colaborador.getCodigo(), listafinal);
                 } else {
-                    ProyectoControler.almacenarModificado(proyecto);
+                    ColaboradorControler.update(Colaborador);
+                    ColaboradorControler.addProyecto(Colaborador.getCodigo(), listafinal);
                 }
-                Details.setproyecto(null);
+                Details.setColaborador(null);
                 Details.setEdit(false);
                 Details.loadData();
                 tabla.clearSelection();
                 activateButtonsSave(false);
                 getData();
+                selec.clear();
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Por favor rellene " + "todos los campos", "Error datos incompletos", JOptionPane.OK_OPTION);
             }
@@ -266,20 +353,37 @@ public class ProyectoFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_BSaveActionPerformed
 
     private void BCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCancelActionPerformed
-        Details.setproyecto(null);
+        Details.setColaborador(null);
         Details.setEdit(false);
         Details.loadData();
         tabla.clearSelection();
         activateButtonsSave(false);
     }//GEN-LAST:event_BCancelActionPerformed
 
-    private void menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
         BCancelActionPerformed(evt);
         View v=new View();
         v.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_menuActionPerformed
+    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+        this.selec.addElement(items.getSelectedItem().toString());
+        this.items.removeItem(items.getSelectedItem()); 
+        listitems.setModel(selec);
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+        this.items.addItem(this.selec.getElementAt(this.listitems.getSelectedIndex()).toString());
+        this.selec.removeElement(this.listitems.getSelectedIndex());
+        for(int i=0;i>listitems.getLastVisibleIndex();i++){
+            listafinal.add(ProyectoControler.get((int)selec.get(i)));
+        }
+        listitems.setModel(selec);
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -288,15 +392,20 @@ public class ProyectoFrame extends javax.swing.JFrame {
     private javax.swing.JButton BDelete;
     private javax.swing.JButton BEdit;
     private javax.swing.JButton BSave;
-    private vistaProyecto.ProyectoDetailsPanel Details;
+    private vistaColaborador.ColaboradorDetailsPanel Details;
     private javax.swing.JLabel Registros;
+    private javax.swing.JComboBox<String> items;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JButton menu;
+    private javax.swing.JList<String> listitems;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

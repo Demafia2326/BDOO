@@ -6,6 +6,7 @@
 package prueban2borrar;
 
 
+import Vista.View;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -19,11 +20,16 @@ import javax.persistence.Query;
  * @author Daniel Pérez Ramírez
  */
 public class Test {
-/*
-	public static void main(String[] args) {
-               
-        }
-        
+    
+    public static EntityManagerFactory emf =Persistence.createEntityManagerFactory("objectdb:$objectdb/db/points.odb");
+    public static View vista ;
+
+    public static void main(String[] args) {
+        EntityManager em = emf.createEntityManager();
+        vista= new View();
+        vista.setVisible(true);
+    }
+        /*
         public static void menuVista() throws InputMismatchException{
             System.out.println("Conexion satisfactoria");
             

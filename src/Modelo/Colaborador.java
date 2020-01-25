@@ -88,7 +88,7 @@ public class Colaborador implements Serializable {
         return proyectoList;
     }
 
-    public void setProyectoList(List<Proyecto> presupuestoList) {
+    public void setProyectoList(List<Proyecto> proyectoList) {
         this.proyectoList = proyectoList;
     }
 

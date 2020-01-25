@@ -25,7 +25,7 @@ public class ColaboradorControler {
     private static  EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/colaborador.odb");
     private static EntityManager em = emf.createEntityManager();
     
-    private ColaboradorControler(){
+    public ColaboradorControler(){
         
     }
     
@@ -46,7 +46,7 @@ public class ColaboradorControler {
      *
      * @param colaborador
      */
-    public void saveColaborador(Colaborador colaborador){
+    public static void saveColaborador(Colaborador colaborador){
         em.getTransaction().begin();
         em.persist(colaborador);
         em.getTransaction().commit();
@@ -57,15 +57,14 @@ public class ColaboradorControler {
      * @param id
      * @return wanted
      */
-    public Colaborador getColaboradorById(int id){
+    public static Colaborador getColaboradorById(int id){
         Colaborador wanted=em.find(Colaborador.class,id);
         return wanted;
     }
     
-    public void delete(int id){
-        Colaborador colaborador=this.getColaboradorById(id);
+    public static void delete(Colaborador c){
         em.getTransaction().begin();
-        em.remove(colaborador);
+        em.remove(c);
         em.getTransaction().commit();
     }
     
@@ -74,17 +73,15 @@ public class ColaboradorControler {
      * @param id: La id del colaborador que se desea actualizar 
      * @param colaborador: Un colaborador con la informacion nueva
      */
-    public void update(int id, Colaborador colaborador) {
-        Colaborador updated=getColaboradorById(id);
-        updated = colaborador;
+    public static void update(Colaborador colaborador) {
         em.getTransaction().begin();
-        em.persist(updated);
+        em.persist(colaborador);
         em.getTransaction().commit();
     }
     
-    public void addProyecto(int id, Proyecto proyecto){
+    public static void addProyecto(int id, List<Proyecto> proyecto){
         Colaborador colaborador=getColaboradorById(id);
-        colaborador.getProyectoList().add(proyecto);
+        colaborador.setProyectoList(proyecto);
         em.getTransaction().begin();
         em.persist(colaborador);
         em.getTransaction().commit();
@@ -96,7 +93,7 @@ public class ColaboradorControler {
      * @param idProyecto
      * @return find: true si ha borrado el proyecto
      */
-    public boolean removeProyecto(int idColaborador, int idProyecto){
+    public static boolean removeProyecto(int idColaborador, int idProyecto){
         Colaborador colaborador=getColaboradorById(idColaborador);
         boolean find=false;
         /*
