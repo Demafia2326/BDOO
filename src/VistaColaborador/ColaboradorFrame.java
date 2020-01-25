@@ -24,7 +24,7 @@ public class ColaboradorFrame extends javax.swing.JFrame {
     private ColaboradorTableModel model;
     private DefaultListModel selec = new DefaultListModel();
     private List<Proyecto> lista= new ArrayList<>();
-    private List<Proyecto> listafinal= new ArrayList<>();
+    private ArrayList<Proyecto> listafinal= new ArrayList<>();
 
     public ColaboradorFrame() throws Exception {
         initComponents();
@@ -57,6 +57,10 @@ public class ColaboradorFrame extends javax.swing.JFrame {
     private void activateButtonsSave(boolean active) {
         BSave.setEnabled(active);
         BCancel.setEnabled(active);
+        jButton2.setEnabled(active);
+        jButton3.setEnabled(active);
+        items.setEnabled(active);
+        listitems.setEnabled(active);
     }
 
     //Método para obtener el objeto de la fila seleccionada
@@ -71,6 +75,17 @@ public class ColaboradorFrame extends javax.swing.JFrame {
             for(Proyecto p: lista){
                 items.addItem(p.getCodigo()+"");
             }
+        }
+    }
+    
+    public void setProyectos(Colaborador Colaborador){
+        this.listafinal= (ArrayList<Proyecto>) Colaborador.getProyectoList();
+        if(listafinal.size()>0){
+            for(Proyecto p: listafinal){
+                System.out.println(p.getCodigo()+"");
+                selec.addElement(p.getCodigo()+"");
+            }
+            listitems.setModel(selec);
         }
     }
 
@@ -223,12 +238,15 @@ public class ColaboradorFrame extends javax.swing.JFrame {
         Details.setPreferredSize(new java.awt.Dimension(385, 193));
 
         items.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        items.setEnabled(false);
 
         listitems.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         listitems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        listitems.setEnabled(false);
         jScrollPane2.setViewportView(listitems);
 
         jButton2.setText("add");
+        jButton2.setEnabled(false);
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -236,6 +254,7 @@ public class ColaboradorFrame extends javax.swing.JFrame {
         });
 
         jButton3.setText("delete");
+        jButton3.setEnabled(false);
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -298,6 +317,7 @@ public class ColaboradorFrame extends javax.swing.JFrame {
     private void BEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BEditActionPerformed
         try {
             Colaborador Colaborador = getSelectedColaborador();
+            setProyectos(Colaborador);
             Details.setColaborador(Colaborador);
             Details.setEnabled(true);
             Details.setEdit(true);
@@ -327,6 +347,12 @@ public class ColaboradorFrame extends javax.swing.JFrame {
 
     private void BSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BSaveActionPerformed
         try {
+            for(int i=0;i<=listitems.getLastVisibleIndex();i++){
+                listitems.setSelectedIndex(i);
+                Proyecto e= ProyectoControler.getProyectoById(Integer.parseInt(listitems.getSelectedValue()));
+                listafinal.add(e);
+                System.out.println("done");
+            }
             if (Details.checkData()) {
                 Details.saveData();
                 Colaborador Colaborador = Details.getColaborador();
@@ -370,19 +396,20 @@ public class ColaboradorFrame extends javax.swing.JFrame {
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        this.selec.addElement(items.getSelectedItem().toString());
-        this.items.removeItem(items.getSelectedItem()); 
-        listitems.setModel(selec);
+        if(items.getSelectedIndex()!=-1){
+            this.selec.addElement(items.getSelectedItem());
+            this.items.removeItem(items.getSelectedItem()); 
+            listitems.setModel(selec);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        this.items.addItem(this.selec.getElementAt(this.listitems.getSelectedIndex()).toString());
-        this.selec.removeElement(this.listitems.getSelectedIndex());
-        for(int i=0;i>listitems.getLastVisibleIndex();i++){
-            listafinal.add(ProyectoControler.getProyectoById((int)selec.get(i)));
+        if(this.listitems.getSelectedIndex()!=-1){
+            this.items.addItem(this.selec.getElementAt(this.listitems.getSelectedIndex()).toString());
+            this.selec.remove(this.listitems.getSelectedIndex());
+            this.listitems.setModel(selec);
         }
-        listitems.setModel(selec);
     }//GEN-LAST:event_jButton3ActionPerformed
 
 

@@ -29,6 +29,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c")
+    , @NamedQuery(name = "Colaborador.findByCodigo", query = "SELECT d FROM Colaborador d WHERE d.codigo = :codigo")
     , @NamedQuery(name = "Colaborador.findByNif", query = "SELECT c FROM Colaborador c WHERE c.nif = :nif")
     , @NamedQuery(name = "Colaborador.findByNombre", query = "SELECT c FROM Colaborador c WHERE c.nombre = :nombre")})
 public class Colaborador implements Serializable {

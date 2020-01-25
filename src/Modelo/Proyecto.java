@@ -28,11 +28,11 @@ import javax.xml.bind.annotation.XmlTransient;
 
 
 @Entity
-@Table(name = "departamentos")
+@Table(name = "proyecto")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Proyecto.findAll", query = "SELECT d FROM Proyecto d")
-    , @NamedQuery(name = "Proyecto.findByNumdept", query = "SELECT d FROM Proyecto d WHERE d.codigo = :codigo")
+    , @NamedQuery(name = "Proyecto.findByCodigo", query = "SELECT d FROM Proyecto d WHERE d.codigo = :codigo")
     , @NamedQuery(name = "Proyecto.findByDescripcion", query = "SELECT d FROM Proyecto d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "Proyecto.findByLocalizacion", query = "SELECT d FROM Proyecto d WHERE d.localizacion = :localizacion")})
 public class Proyecto implements Serializable {
