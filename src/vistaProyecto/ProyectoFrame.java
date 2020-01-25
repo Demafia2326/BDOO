@@ -53,7 +53,7 @@ public class ProyectoFrame extends javax.swing.JFrame {
     //Método para obtener el objeto de la fila seleccionada
     private Proyecto getSelectedproyecto() throws Exception {
         int id = (int) tabla.getValueAt(tabla.getSelectedRow(), 0);
-        return new ProyectoControler().get(id);
+        return new ProyectoControler().getProyectoById(id);
     }
 
     /**
@@ -82,7 +82,7 @@ public class ProyectoFrame extends javax.swing.JFrame {
         Details = new vistaProyecto.ProyectoDetailsPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Registro de Sedes");
+        setTitle("Registro de Proyectos");
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
@@ -91,7 +91,6 @@ public class ProyectoFrame extends javax.swing.JFrame {
         BAdd.setText("Nuevo");
         BAdd.setToolTipText("");
         BAdd.setBorderPainted(false);
-        BAdd.setContentAreaFilled(false);
         BAdd.setFocusable(false);
         BAdd.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         BAdd.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
@@ -106,7 +105,6 @@ public class ProyectoFrame extends javax.swing.JFrame {
         BEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/edit.png"))); // NOI18N
         BEdit.setText("Editar");
         BEdit.setBorderPainted(false);
-        BEdit.setContentAreaFilled(false);
         BEdit.setEnabled(false);
         BEdit.setFocusable(false);
         BEdit.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -121,7 +119,6 @@ public class ProyectoFrame extends javax.swing.JFrame {
         BDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/delete.png"))); // NOI18N
         BDelete.setText("Eliminar");
         BDelete.setBorderPainted(false);
-        BDelete.setContentAreaFilled(false);
         BDelete.setEnabled(false);
         BDelete.setFocusable(false);
         BDelete.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -137,7 +134,6 @@ public class ProyectoFrame extends javax.swing.JFrame {
         BSave.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/save.png"))); // NOI18N
         BSave.setText("Guardar");
         BSave.setBorderPainted(false);
-        BSave.setContentAreaFilled(false);
         BSave.setEnabled(false);
         BSave.setFocusable(false);
         BSave.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -152,7 +148,6 @@ public class ProyectoFrame extends javax.swing.JFrame {
         BCancel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/cancelar.png"))); // NOI18N
         BCancel.setText("Cancelar");
         BCancel.setBorderPainted(false);
-        BCancel.setContentAreaFilled(false);
         BCancel.setEnabled(false);
         BCancel.setFocusable(false);
         BCancel.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -166,8 +161,14 @@ public class ProyectoFrame extends javax.swing.JFrame {
         jToolBar1.add(jSeparator3);
 
         menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deshacer.png"))); // NOI18N
+        menu.setText("Menu");
+        menu.setBorderPainted(false);
         menu.setFocusable(false);
         menu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        menu.setMaximumSize(new java.awt.Dimension(57, 77));
+        menu.setMinimumSize(new java.awt.Dimension(57, 77));
+        menu.setOpaque(false);
+        menu.setPreferredSize(new java.awt.Dimension(57, 77));
         menu.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
         menu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -229,11 +230,11 @@ public class ProyectoFrame extends javax.swing.JFrame {
         try {
             Proyecto proyecto = getSelectedproyecto();
             
-            if (JOptionPane.showConfirmDialog(rootPane, "¿Seguro que quieres borrar " + "esta sede?", "Borrar Sede", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                ProyectoControler.eliminar(proyecto);
+            if (JOptionPane.showConfirmDialog(rootPane, "¿Seguro que quieres borrar " + "este proyecto?", "Borrar Sede", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                ProyectoControler.delete(proyecto);
                 getData();
             } else {
-                JOptionPane.showMessageDialog(rootPane, "No puedes borrar una sede " + "hasta borrar todos sus complejos", "Error borrar Sede", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(rootPane, "No puedes borrar un proyecto " + "hasta borrar todos sus complejos", "Error borrar Sede", JOptionPane.OK_OPTION);
             }
         } catch (Exception ex) {
             ex.getMessage();
@@ -245,11 +246,12 @@ public class ProyectoFrame extends javax.swing.JFrame {
     private void BSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BSaveActionPerformed
         try {
             if (Details.checkData()) {
+                Details.saveData();
                 Proyecto proyecto = Details.getproyecto();
                 if ((Integer)proyecto.getCodigo()== null) {
-                    ProyectoControler.almacenarNuevo(proyecto);
+                    ProyectoControler.saveProyecto(proyecto);
                 } else {
-                    ProyectoControler.almacenarModificado(proyecto);
+                    ProyectoControler.update(proyecto);
                 }
                 Details.setproyecto(null);
                 Details.setEdit(false);

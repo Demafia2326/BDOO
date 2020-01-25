@@ -3,37 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vistaColaborador;
+package vistaCliente;
 
-import Controlador.ColaboradorControler;
-import Controlador.ProyectoControler;
-import Modelo.Colaborador;
-import Modelo.Proyecto;
+import Controlador.ClienteControler;
+import Modelo.Cliente;
 import Vista.View;
-import java.util.ArrayList;
-import java.util.List;
-import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author alfon
  */
-public class ColaboradorFrame extends javax.swing.JFrame {
+public class ClienteFrame extends javax.swing.JFrame {
 
-    private ColaboradorTableModel model;
-    private DefaultListModel selec = new DefaultListModel();
-    private List<Proyecto> lista= new ArrayList<>();
-    private List<Proyecto> listafinal= new ArrayList<>();
+    private ClienteTableModel model;
 
-    public ColaboradorFrame() throws Exception {
+    public ClienteFrame() throws Exception {
         initComponents();
-        this.model = new ColaboradorTableModel(new ColaboradorControler());
+        this.model = new ClienteTableModel(new ClienteControler());
         getData();
         this.tabla.setModel(model);
         //Introducimos la estructura de la tabla         
         this.Details.setEdit(false);
-        this.Details.setColaborador(null);
+        this.Details.setcliente(null);
         activateButtonsCRUD(false);
         activateButtonsSave(false);
         this.tabla.getSelectionModel().addListSelectionListener(e -> {
@@ -45,8 +37,7 @@ public class ColaboradorFrame extends javax.swing.JFrame {
         Registros.setText("Actualizando tabla...");
         model.updateModel();
         model.fireTableDataChanged();
-        Registros.setText(model.getRowCount() + " Colaboradores disponibles");        
-        getProyectos();
+        Registros.setText(model.getRowCount() + " Cliente disponibles");
     }
 
     private void activateButtonsCRUD(boolean active) {
@@ -60,18 +51,9 @@ public class ColaboradorFrame extends javax.swing.JFrame {
     }
 
     //Método para obtener el objeto de la fila seleccionada
-    private Colaborador getSelectedColaborador() throws Exception {
+    private Cliente getSelectedcliente() throws Exception {
         int id = (int) tabla.getValueAt(tabla.getSelectedRow(), 0);
-        return new ColaboradorControler().getColaboradorById(id);
-    }
-    
-    public void getProyectos(){
-        lista=ProyectoControler.getAll();
-        if(lista!=null){
-            for(Proyecto p: lista){
-                items.addItem(p.getCodigo()+"");
-            }
-        }
+        return new ClienteControler().getClienteById(id);
     }
 
     /**
@@ -92,20 +74,15 @@ public class ColaboradorFrame extends javax.swing.JFrame {
         BSave = new javax.swing.JButton();
         BCancel = new javax.swing.JButton();
         jSeparator3 = new javax.swing.JToolBar.Separator();
-        jButton1 = new javax.swing.JButton();
+        menu = new javax.swing.JButton();
         Registros = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tabla = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        Details = new vistaColaborador.ColaboradorDetailsPanel();
-        items = new javax.swing.JComboBox<>();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        listitems = new javax.swing.JList<>();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        Details = new vistaCliente.ClienteDetailsPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Registro de Colaboradores");
+        setTitle("Registro de Clientes");
 
         jToolBar1.setFloatable(false);
         jToolBar1.setRollover(true);
@@ -188,17 +165,22 @@ public class ColaboradorFrame extends javax.swing.JFrame {
         jToolBar1.add(BCancel);
         jToolBar1.add(jSeparator3);
 
-        jButton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deshacer.png"))); // NOI18N
-        jButton1.setText("Menu");
-        jButton1.setFocusable(false);
-        jButton1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        jButton1.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        menu.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/deshacer.png"))); // NOI18N
+        menu.setText("Menu");
+        menu.setBorderPainted(false);
+        menu.setFocusable(false);
+        menu.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        menu.setMaximumSize(new java.awt.Dimension(57, 77));
+        menu.setMinimumSize(new java.awt.Dimension(57, 77));
+        menu.setOpaque(false);
+        menu.setPreferredSize(new java.awt.Dimension(57, 77));
+        menu.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
+        menu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                menuActionPerformed(evt);
             }
         });
-        jToolBar1.add(jButton1);
+        jToolBar1.add(menu);
 
         getContentPane().add(jToolBar1, java.awt.BorderLayout.PAGE_START);
 
@@ -220,67 +202,8 @@ public class ColaboradorFrame extends javax.swing.JFrame {
 
         getContentPane().add(jScrollPane1, java.awt.BorderLayout.CENTER);
 
-        Details.setPreferredSize(new java.awt.Dimension(385, 193));
-
-        items.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
-        listitems.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        listitems.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane2.setViewportView(listitems);
-
-        jButton2.setText("add");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-
-        jButton3.setText("delete");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(Details, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 3, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(items, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(60, 60, 60)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(68, 68, 68))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(Details, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 164, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jButton2))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(39, 39, 39)
-                                .addComponent(items, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton3)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
+        jPanel1.setLayout(new java.awt.BorderLayout());
+        jPanel1.add(Details, java.awt.BorderLayout.LINE_START);
 
         getContentPane().add(jPanel1, java.awt.BorderLayout.LINE_END);
 
@@ -289,7 +212,7 @@ public class ColaboradorFrame extends javax.swing.JFrame {
 
     private void BAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BAddActionPerformed
         tabla.clearSelection();
-        Details.setColaborador(null);
+        Details.setcliente(null);
         Details.loadData();
         Details.setEdit(true);
         activateButtonsSave(true);
@@ -297,8 +220,8 @@ public class ColaboradorFrame extends javax.swing.JFrame {
 
     private void BEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BEditActionPerformed
         try {
-            Colaborador Colaborador = getSelectedColaborador();
-            Details.setColaborador(Colaborador);
+            Cliente cliente = getSelectedcliente();
+            Details.setcliente(cliente);
             Details.setEnabled(true);
             Details.setEdit(true);
             Details.loadData();
@@ -310,13 +233,13 @@ public class ColaboradorFrame extends javax.swing.JFrame {
 
     private void BDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BDeleteActionPerformed
         try {
-            Colaborador Colaborador = getSelectedColaborador();
+            Cliente cliente = getSelectedcliente();
             
-            if (JOptionPane.showConfirmDialog(rootPane, "¿Seguro que quieres borrar " + "este colaborador?", "Borrar Sede", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                ColaboradorControler.delete(Colaborador);
+            if (JOptionPane.showConfirmDialog(rootPane, "¿Seguro que quieres borrar " + "este cliente?", "Borrar Sede", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                ClienteControler.delete(cliente);
                 getData();
             } else {
-                JOptionPane.showMessageDialog(rootPane, "No puedes borrar un colaborador" + "hasta borrar todos sus complejos", "Error borrar Sede", JOptionPane.OK_OPTION);
+                JOptionPane.showMessageDialog(rootPane, "No puedes borrar un cliente " + "hasta borrar todos sus complejos", "Error borrar Sede", JOptionPane.OK_OPTION);
             }
         } catch (Exception ex) {
             ex.getMessage();
@@ -329,21 +252,18 @@ public class ColaboradorFrame extends javax.swing.JFrame {
         try {
             if (Details.checkData()) {
                 Details.saveData();
-                Colaborador Colaborador = Details.getColaborador();
-                if ((Integer)Colaborador.getCodigo()== null) {
-                    ColaboradorControler.saveColaborador(Colaborador);
-                    ColaboradorControler.addProyecto(Colaborador.getCodigo(), listafinal);
+                Cliente cliente = Details.getcliente();
+                if ((Integer)cliente.getCodigo()== null) {
+                    ClienteControler.saveCliente(cliente);
                 } else {
-                    ColaboradorControler.update(Colaborador);
-                    ColaboradorControler.addProyecto(Colaborador.getCodigo(), listafinal);
+                    ClienteControler.update(cliente);
                 }
-                Details.setColaborador(null);
+                Details.setcliente(null);
                 Details.setEdit(false);
                 Details.loadData();
                 tabla.clearSelection();
                 activateButtonsSave(false);
                 getData();
-                selec.clear();
             } else {
                 JOptionPane.showMessageDialog(rootPane, "Por favor rellene " + "todos los campos", "Error datos incompletos", JOptionPane.OK_OPTION);
             }
@@ -353,37 +273,20 @@ public class ColaboradorFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_BSaveActionPerformed
 
     private void BCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BCancelActionPerformed
-        Details.setColaborador(null);
+        Details.setcliente(null);
         Details.setEdit(false);
         Details.loadData();
         tabla.clearSelection();
         activateButtonsSave(false);
     }//GEN-LAST:event_BCancelActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuActionPerformed
         // TODO add your handling code here:
         BCancelActionPerformed(evt);
         View v=new View();
         v.setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton1ActionPerformed
-    
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        this.selec.addElement(items.getSelectedItem().toString());
-        this.items.removeItem(items.getSelectedItem()); 
-        listitems.setModel(selec);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
-        this.items.addItem(this.selec.getElementAt(this.listitems.getSelectedIndex()).toString());
-        this.selec.removeElement(this.listitems.getSelectedIndex());
-        for(int i=0;i>listitems.getLastVisibleIndex();i++){
-            listafinal.add(ProyectoControler.getProyectoById((int)selec.get(i)));
-        }
-        listitems.setModel(selec);
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_menuActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -392,20 +295,15 @@ public class ColaboradorFrame extends javax.swing.JFrame {
     private javax.swing.JButton BDelete;
     private javax.swing.JButton BEdit;
     private javax.swing.JButton BSave;
-    private vistaColaborador.ColaboradorDetailsPanel Details;
+    private vistaCliente.ClienteDetailsPanel Details;
     private javax.swing.JLabel Registros;
-    private javax.swing.JComboBox<String> items;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToolBar.Separator jSeparator1;
     private javax.swing.JToolBar.Separator jSeparator2;
     private javax.swing.JToolBar.Separator jSeparator3;
     private javax.swing.JToolBar jToolBar1;
-    private javax.swing.JList<String> listitems;
+    private javax.swing.JButton menu;
     private javax.swing.JTable tabla;
     // End of variables declaration//GEN-END:variables
 }

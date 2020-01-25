@@ -21,11 +21,9 @@ import javax.persistence.Query;
  */
 public class Test {
     
-    public static EntityManagerFactory emf =Persistence.createEntityManagerFactory("objectdb:$objectdb/db/points.odb");
     public static View vista ;
 
     public static void main(String[] args) {
-        EntityManager em = emf.createEntityManager();
         vista= new View();
         vista.setVisible(true);
     }

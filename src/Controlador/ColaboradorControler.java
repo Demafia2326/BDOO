@@ -5,7 +5,6 @@
  */
 package Controlador;
 
-import static Controlador.ProyectoControler.getEm;
 import Modelo.Colaborador;
 import Modelo.Proyecto;
 import java.util.ArrayList;
@@ -22,6 +21,7 @@ import javax.persistence.Query;
 public class ColaboradorControler {
     
     private static ColaboradorControler instance;
+    private static final String TABLE_NAME = "colaborador";
     private static  EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/colaborador.odb");
     private static EntityManager em = emf.createEntityManager();
     
@@ -38,7 +38,7 @@ public class ColaboradorControler {
     
     public static List<Colaborador> getAll(){
         List<Colaborador> list = new ArrayList<Colaborador>();
-        list=em.createQuery("SELECT c FROM Colaborador c").getResultList();
+        list=em.createQuery("SELECT c FROM Colaborador c",Colaborador.class).getResultList();
         return list;
     }
     
@@ -96,15 +96,15 @@ public class ColaboradorControler {
     public static boolean removeProyecto(int idColaborador, int idProyecto){
         Colaborador colaborador=getColaboradorById(idColaborador);
         boolean find=false;
-        /*
-            Proyecto proyecto=ProyectoControler.getInstance().getProyectoById();
+        
+            Proyecto proyecto=ProyectoControler.getInstance().getProyectoById(idProyecto);
             for(int i=0;i<colaborador.getProyectoList().size()&&!find;i++){
                 if(colaborador.getProyectoList().get(i).equals(proyecto)){
                     colaborador.getProyectoList().remove(i);
                     find=true;
                 }
             }
-        */
+        
         return find;
     }
 }

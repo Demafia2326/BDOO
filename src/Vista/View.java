@@ -7,6 +7,7 @@ package Vista;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import vistaCliente.ClienteFrame;
 import vistaColaborador.ColaboradorFrame;
 import vistaProyecto.ProyectoFrame;
 
@@ -15,12 +16,22 @@ import vistaProyecto.ProyectoFrame;
  * @author alfon
  */
 public class View extends javax.swing.JFrame {
+    ProyectoFrame pf;
+    ColaboradorFrame cf;
+    ClienteFrame clf;
 
     /**
      * Creates new form View
      */
     public View() {
         initComponents();
+        try {
+            pf = new ProyectoFrame();
+            cf = new ColaboradorFrame();
+            clf = new ClienteFrame();
+        } catch (Exception ex) {
+            Logger.getLogger(View.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -36,10 +47,15 @@ public class View extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Menu");
 
         jButton1.setText("Cliente");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
 
         jButton2.setText("Colaborador");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -90,28 +106,22 @@ public class View extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        ProyectoFrame pf;
-        try {
-            pf = new ProyectoFrame();
-            pf.setVisible(true);
-            this.dispose();
-        } catch (Exception ex) {
-            ex.getMessage();
-        }
-        
+        pf.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        ColaboradorFrame pf;
-        try {
-            pf = new ColaboradorFrame();
-            pf.setVisible(true);
-            this.dispose();
-        } catch (Exception ex) {
-            ex.getMessage();
-        }
+        this.dispose();
+        cf.setVisible(true);
+        
     }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        // TODO add your handling code here:
+        clf.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments

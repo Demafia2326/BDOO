@@ -25,13 +25,12 @@ import javax.xml.bind.annotation.XmlTransient;
 
 
 @Entity
-@Table(name = "colaborador")
+@Table(name = "Colaborador")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Colaborador.findAll", query = "SELECT d FROM Colaborador d")
-    , @NamedQuery(name = "Colaborador.findByNumdept", query = "SELECT d FROM Colaborador d WHERE d.numdept = :numdept")
-    , @NamedQuery(name = "Colaborador.findByNombre", query = "SELECT d FROM Colaborador d WHERE d.nombre = :nombre")
-    , @NamedQuery(name = "Colaborador.findByLocalizacion", query = "SELECT d FROM Colaborador d WHERE d.localizacion = :localizacion")})
+    @NamedQuery(name = "Colaborador.findAll", query = "SELECT c FROM Colaborador c")
+    , @NamedQuery(name = "Colaborador.findByNif", query = "SELECT c FROM Colaborador c WHERE c.nif = :nif")
+    , @NamedQuery(name = "Colaborador.findByNombre", query = "SELECT c FROM Colaborador c WHERE c.nombre = :nombre")})
 public class Colaborador implements Serializable {
 
     private static final long serialVersionUID = 1L;

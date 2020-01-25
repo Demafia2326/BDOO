@@ -33,7 +33,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @NamedQueries({
     @NamedQuery(name = "Proyecto.findAll", query = "SELECT d FROM Proyecto d")
     , @NamedQuery(name = "Proyecto.findByNumdept", query = "SELECT d FROM Proyecto d WHERE d.codigo = :codigo")
-    , @NamedQuery(name = "Proyecto.findByNombre", query = "SELECT d FROM Proyecto d WHERE d.descripcion = :descripcion")
+    , @NamedQuery(name = "Proyecto.findByDescripcion", query = "SELECT d FROM Proyecto d WHERE d.descripcion = :descripcion")
     , @NamedQuery(name = "Proyecto.findByLocalizacion", query = "SELECT d FROM Proyecto d WHERE d.localizacion = :localizacion")})
 public class Proyecto implements Serializable {
 
@@ -54,7 +54,7 @@ public class Proyecto implements Serializable {
     private Cliente cliente;
     
     @ManyToMany(cascade = CascadeType.ALL, mappedBy = "Colaborador", fetch = FetchType.LAZY)
-    private List<Proyecto> colabList;
+    private List<Colaborador> colaboradorList;
     
     
     
@@ -71,10 +71,6 @@ public class Proyecto implements Serializable {
         this.descrip = descrip;
         this.localizacion = localizacion;
     }
-    
-    
-
-    
 
     public int getCodigo() {
         return codigo;
@@ -100,51 +96,25 @@ public class Proyecto implements Serializable {
         this.localizacion = localizacion;
     }
 
-    
-    
-    
-
-    
-    /*
     @XmlTransient
-    public List<Presupuesto> getPresupuestoList() {
-        return presupuestoList;
+    public Cliente getCliente() {
+        return cliente;
     }
 
-    public void setPresupuestoList(List<Presupuesto> presupuestoList) {
-        this.presupuestoList = presupuestoList;
-    }
-
-    @XmlTransient
-    public List<Empleados> getEmpleadosList() {
-        return empleadosList;
-    }
-
-    public void setEmpleadosList(List<Empleados> empleadosList) {
-        this.empleadosList = empleadosList;
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
     
-    /*
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (numdept != null ? numdept.hashCode() : 0);
-        return hash;
+    @XmlTransient
+    public List<Colaborador> getColaboradorList() {
+        return this.colaboradorList;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Departamentos)) {
-            return false;
-        }
-        Departamentos other = (Departamentos) object;
-        if ((this.numdept == null && other.numdept != null) || (this.numdept != null && !this.numdept.equals(other.numdept))) {
-            return false;
-        }
-        return true;
+    public void setColaboradorList(List<Colaborador> colaboradorList) {
+        this.colaboradorList = colaboradorList;
     }
-    */
+
+    
 
     @Override
     public String toString() {

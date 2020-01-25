@@ -8,6 +8,7 @@ package Controlador;
 import Modelo.Cliente;
 import Modelo.Colaborador;
 import Modelo.Proyecto;
+import Modelo.Proyecto;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -20,96 +21,92 @@ import javax.persistence.Query;
  * @author Daniel Pérez Ramírez
  */
 public class ProyectoControler {
+    
+    private static ProyectoControler instance;
     private static final String TABLE_NAME = "proyecto";
-    private static  EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/proyecto.odb");	
+    private static  EntityManagerFactory emf = Persistence.createEntityManagerFactory("$objectdb/db/proyecto.odb");
     private static EntityManager em = emf.createEntityManager();
+    
+    public ProyectoControler(){
+        
+    }
+    
+    public static ProyectoControler getInstance(){
+        if(instance==null){
+            instance=new ProyectoControler();
+        }
+        return instance;
+    }
+    
     public static List<Proyecto> getAll(){
         List<Proyecto> list = new ArrayList<Proyecto>();
-       
-	    
-       
-            Query q1 = getEm().createQuery("select * from Proyecto ", Proyecto.class);
-           // d = new Departamentos();
-       
+        list=em.createQuery("SELECT c FROM Proyecto c",Proyecto.class).getResultList();
         return list;
     }
     
-  
-    
-    
-    public static Proyecto get(int id){
-       
-        Proyecto d = null;
-            		
-	   
-       
-            Query q1 = getEm().createQuery("select * from Proyecto codigo = "+id, Proyecto.class);
-            d = new Proyecto();
-            d.setCodigo(id);
-            
-        return d;
-       
+    /**
+     *
+     * @param proyecto
+     */
+    public static void saveProyecto(Proyecto proyecto){
+        em.getTransaction().begin();
+        em.persist(proyecto);
+        em.getTransaction().commit();
     }
     
-    public static void almacenarNuevo(Proyecto d) {
-
-                
-		
-                Cliente e= null;
-                Colaborador p=null;
-		
-		getEm().getTransaction().begin();
-		Proyecto D = new Proyecto(d.getCodigo(), d.getDescrip(),d.getLocalizacion());
-              
-		D.setLocalizacion(d.getLocalizacion());
-                getEm().persist(D);
-		getEm().getTransaction().commit();
-                getEm().close();
-		
-		
-              
-
+    /**
+     *
+     * @param id
+     * @return wanted
+     */
+    public static Proyecto getProyectoById(int id){
+        Proyecto wanted=em.find(Proyecto.class,id);
+        return wanted;
     }
     
-     public static void almacenarModificado(Proyecto d){
-        	Proyecto D = new Proyecto();
-                D = getEm().find(Proyecto.class, d.getCodigo());
-                getEm().getTransaction().begin();
-                D.setDescrip(d.getDescrip());
-                D.setLocalizacion(d.getLocalizacion());
-                getEm().getTransaction().commit();
-                getEm().close();
+    public static void delete(Proyecto c){
+        em.getTransaction().begin();
+        em.remove(c);
+        em.getTransaction().commit();
     }
-     
-     
-    public static void listar(){
+    
+    /**
+     *
+     * @param id: La id del proyecto que se desea actualizar 
+     * @param proyecto: Un proyecto con la informacion nueva
+     */
+    public static void update(Proyecto proyecto) {
+        em.getTransaction().begin();
+        em.persist(proyecto);
+        em.getTransaction().commit();
+    }
+    
+    public static void addColaborador(int id, List<Colaborador> colaborador){
+        Proyecto proyecto=getProyectoById(id);
+        proyecto.setColaboradorList(colaborador);
+        em.getTransaction().begin();
+        em.persist(proyecto);
+        em.getTransaction().commit();
+    }
+    
+    /**
+     *
+     * @param idProyecto
+     * @param idProyecto
+     * @return find: true si ha borrado el proyecto
+     */
+    public static boolean removeProyecto(int idProyecto, int idColaborador){
+        Proyecto proyecto=getProyectoById(idProyecto);
+        boolean find=false;
         
+            Colaborador colaborador=ColaboradorControler.getInstance().getColaboradorById(idColaborador);
+            for(int i=0;i<proyecto.getColaboradorList().size()&&!find;i++){
+                if(proyecto.getColaboradorList().get(i).equals(proyecto)){
+                    proyecto.getColaboradorList().remove(i);
+                    find=true;
+                }
+            }
+        
+        return find;
     }
-     
-     public static void eliminar(Proyecto d){
-         Proyecto D = new Proyecto();
-         D = getEm().find(Proyecto.class, d.getCodigo());
-         getEm().getTransaction().begin();
-         getEm().remove(D);
-         getEm().getTransaction().commit();
-         getEm().close();
-    }
-
-    /**
-     * @return the emf
-     */
-    public static EntityManagerFactory getEmf() {
-        return emf;
-    }
-
-    /**
-     * @return the em
-     */
-    public static EntityManager getEm() {
-        return em;
-    }
-    
-    
-    
 }
-

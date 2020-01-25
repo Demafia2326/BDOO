@@ -3,29 +3,29 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package vistaProyecto;
+package vistaCliente;
 
-import Modelo.Proyecto;
+import Modelo.Cliente;
 
 /**
  *
  * @author alfon
  */
-public class ProyectoDetailsPanel extends javax.swing.JPanel {
+public class ClienteDetailsPanel extends javax.swing.JPanel {
 
-    private Proyecto proyecto;
+    private Cliente cliente;
     private boolean edit;
 
-    public ProyectoDetailsPanel() {
+    public ClienteDetailsPanel() {
         initComponents();
     }
 
-    public Proyecto getproyecto() {
-        return proyecto;
+    public Cliente getcliente() {
+        return cliente;
     }
 
-    public void setproyecto(Proyecto proyecto) {
-        this.proyecto = proyecto;
+    public void setcliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 
     public boolean isEdit() {
@@ -41,9 +41,9 @@ public class ProyectoDetailsPanel extends javax.swing.JPanel {
 //Método para el botón editar    
 
     public void loadData() {
-        if (proyecto != null) {
-            TextName.setText(proyecto.getDescrip());
-            TextBudget.setText(proyecto.getLocalizacion());
+        if (cliente != null) {
+            TextName.setText(cliente.getNum_social());
+            TextBudget.setText(cliente.getTelefono());
         } else {
             TextName.setText("");
             TextBudget.setText("");
@@ -54,12 +54,12 @@ public class ProyectoDetailsPanel extends javax.swing.JPanel {
     
 //Método para el botón guardar     
     public void saveData() {
-        if (proyecto == null) {
-            proyecto = new Proyecto();
+        if (cliente == null) {
+            cliente = new Cliente();
         }
-        proyecto.setDescrip(TextName.getText());
-        proyecto.setLocalizacion(TextBudget.getText());
-        //proyecto.setCliente(cliente);
+        cliente.setNum_social(TextName.getText());
+        cliente.setTelefono(TextBudget.getText());
+        
     }       
     
     
@@ -85,13 +85,10 @@ public class ProyectoDetailsPanel extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         TextName = new javax.swing.JTextField();
         TextBudget = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
 
-        jLabel1.setText("Descripción");
+        jLabel1.setText("Dni");
 
-        jLabel2.setText("Localización");
-
-        jLabel3.setText("Id del cliente");
+        jLabel2.setText("Telefono");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -100,18 +97,15 @@ public class ProyectoDetailsPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(30, 30, 30))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1)
-                                .addGap(21, 21, 21))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel2)
-                                .addGap(15, 15, 15)))
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(TextBudget)
-                            .addComponent(TextName, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))))
+                        .addComponent(jLabel2)
+                        .addGap(15, 15, 15)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(TextBudget)
+                    .addComponent(TextName, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -125,9 +119,7 @@ public class ProyectoDetailsPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(TextBudget, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -137,6 +129,5 @@ public class ProyectoDetailsPanel extends javax.swing.JPanel {
     private javax.swing.JTextField TextName;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     // End of variables declaration//GEN-END:variables
 }

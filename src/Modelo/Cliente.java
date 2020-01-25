@@ -32,9 +32,9 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Cliente.findAll", query = "SELECT d FROM Cliente d")
-    , @NamedQuery(name = "Cliente.findByNumdept", query = "SELECT d FROM Cliente d WHERE d.numdept = :numdept")
-    , @NamedQuery(name = "Cliente.findByNombre", query = "SELECT d FROM Cliente d WHERE d.nombre = :nombre")
-    , @NamedQuery(name = "Cliente.findByLocalizacion", query = "SELECT d FROM Cliente d WHERE d.localizacion = :localizacion")})
+    , @NamedQuery(name = "Cliente.findByNumdept", query = "SELECT d FROM Cliente d WHERE d.codoigo = :ncodigo")
+    , @NamedQuery(name = "Cliente.findByNombre", query = "SELECT d FROM Cliente d WHERE d.num_social = :num_social")
+    , @NamedQuery(name = "Cliente.findByLocalizacion", query = "SELECT d FROM Cliente d WHERE d.telefono = :telefono")})
 public class Cliente implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -90,7 +90,7 @@ public class Cliente implements Serializable {
         return proyectoList;
     }
 
-    public void setPresupuestoList(List<Proyecto> presupuestoList) {
+    public void setProyectoList(List<Proyecto> presupuestoList) {
         this.proyectoList = presupuestoList;
     }
 
